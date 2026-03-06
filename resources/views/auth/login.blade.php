@@ -60,7 +60,7 @@
 
         <p class="text-white text-base">
             {{ __('Not a member yet?') }}
-            <a href="{{ route('register') }}" class="text-primary hover:underline">{{ __('Sign Up') }}</a>
+            <a href="https://www.planetf.ng/onboarding" class="text-primary hover:underline">{{ __('Sign Up') }}</a>
         </p>
     </x-auth-card>
 </x-guest-layout>

@@ -69,7 +69,7 @@
 
         <p class="text-white text-base">
             {{ __('Already have an account?') }}
-            <a href="{{ route('login') }}" class="text-primary hover:underline">{{ __('Sign In') }}</a>
+            <a href="https://www.planetf.ng/login" class="text-primary hover:underline">{{ __('Sign In') }}</a>
         </p>
     </x-auth-card>
 </x-guest-layout>

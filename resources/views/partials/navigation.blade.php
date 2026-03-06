@@ -27,11 +27,11 @@
                         Dashboard
                     </a>
                 @else
-                    <a href="{{ route('login') }}"
+                    <a href="https://www.planetf.ng/login"
                        class="text-base md:text-lg font-medium text-grey hover:text-primary transition">
                         Sign In
                     </a>
-                    <a href="{{ route('register') }}"
+                    <a href="https://www.planetf.ng/onboarding"
                        class="inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-primary text-darkmode text-base font-semibold border border-primary hover:bg-transparent hover:text-primary transition">
                         Sign Up
                     </a>
@@ -81,12 +81,12 @@
                         Dashboard
                     </a>
                 @else
-                    <a href="{{ route('login') }}"
+                    <a href="https://www.planetf.ng/login"
                        @click="open = false"
                        class="block text-base font-medium text-grey hover:text-primary transition">
                         Sign In
                     </a>
-                    <a href="{{ route('register') }}"
+                    <a href="https://www.planetf.ng/onboarding"
                        @click="open = false"
                        class="inline-flex items-center justify-center w-full mt-2 px-5 py-2.5 rounded-lg bg-primary text-darkmode text-base font-semibold border border-primary hover:bg-transparent hover:text-primary transition">
                         Sign Up

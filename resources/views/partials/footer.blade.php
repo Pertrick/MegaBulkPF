@@ -11,22 +11,30 @@
                         +2348031230068
                     </a><br>
                     <a class="text-grey hover:text-primary transition" href="mailto:info@planetf.com.ng">
-                        info@planetf.com.ng
+                        Support@planetf.ng
                     </a>
                 </p>
                 <div class="flex items-center gap-3">
-                    <a href="https://facebook.com/5starcompany" target="_blank"
-                       class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-dark_grey text-grey hover:text-primary hover:bg-dark_grey/80 transition">
-                        <i class="fa fa-facebook-square"></i>
+                    <a href="https://www.facebook.com/share/CeEB9FfEcJ321fN2/?mibextid=WC7FNe" target="_blank"
+                       class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-dark_grey text-grey hover:text-primary hover:bg-dark_grey/80 transition"
+                       aria-label="Facebook">
+                        <i class="fab fa-facebook"></i>
                     </a>
-                    <a href="#"
-                       class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-dark_grey text-grey hover:text-primary hover:bg-dark_grey/80 transition">
-                        <i class="fa fa-twitter"></i>
+                    <a href="https://x.com/planetf_ng1?s=11&t=3ZNS95UUIBAkS5ZKl-NLGQ" target="_blank"
+                       class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-dark_grey text-grey hover:text-primary hover:bg-dark_grey/80 transition"
+                       aria-label="X (Twitter)">
+                        <i class="fab fa-x-twitter"></i>
                     </a>
-                    <a href="#"
-                       class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-dark_grey text-grey hover:text-primary hover:bg-dark_grey/80 transition">
-                        <i class="fa fa-instagram"></i>
+                    <a href="https://www.tiktok.com/@planetf_ng?_t=8m8V7Bp4oLu&_r=1" target="_blank"
+                       class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-dark_grey text-grey hover:text-primary hover:bg-dark_grey/80 transition"
+                       aria-label="TikTok">
+                        <i class="fab fa-tiktok"></i>
                     </a>
+                    {{-- <a href="#"
+                       class="h-9 w-9 inline-flex items-center justify-center rounded-full bg-dark_grey text-grey hover:text-primary hover:bg-dark_grey/80 transition"
+                       aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a> --}}
                 </div>
             </div>
 
