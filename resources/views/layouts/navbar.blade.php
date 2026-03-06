@@ -27,7 +27,7 @@
     <!-- <link rel="stylesheet" href="css/responsive.css"> -->
 </head>
 
-<body>
+<body class="overflow-x-hidden">
    
     <!-- header-start -->
     <header>

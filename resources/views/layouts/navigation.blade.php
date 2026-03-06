@@ -6,9 +6,9 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
-                        <x-application-logo class="block h-9 w-auto fill-current text-primary" />
+                        <x-application-logo class="block h-9 w-auto" />
                         <span class="text-base md:text-lg font-semibold text-grey tracking-wide uppercase">
-                            {{ config('app.name', 'MegaBox') }}
+                            {{ config('app.name', 'Planet F') }}
                         </span>
                     </a>
                 </div>

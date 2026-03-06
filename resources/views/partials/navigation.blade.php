@@ -1,13 +1,8 @@
 <header x-data="{ open: false }" class="relative z-40">
     <nav class="w-full border-b border-dark_border/60 bg-darkmode/90 backdrop-blur">
         <div class="max-w-screen-xl mx-auto px-4 sm:px-8 lg:px-10 h-20 flex items-center justify-between">
-            <a href="{{ url('/') }}" class="flex items-center gap-2">
-                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-darkmode font-bold text-lg">
-                    MB
-                </span>
-                <span class="text-base md:text-lg font-semibold text-grey tracking-wide uppercase">
-                    Mega Bulk Service
-                </span>
+            <a href="{{ url('/') }}" class="flex items-center gap-3">
+                <img src="{{ asset('images/planetf_logo.f2c8caa1.svg') }}" alt="Planet F" class="h-8 w-auto">
             </a>
 
             <div class="hidden md:flex items-center gap-10">

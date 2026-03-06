@@ -46,7 +46,7 @@
         padding:10px 0;
     }
 </style>
-<body>
+<body class="overflow-x-hidden">
     <div class="container">
    <div class="row">
       <div class="col-md-6 mx-auto mt-5">

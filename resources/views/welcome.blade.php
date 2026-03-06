@@ -1,6 +1,6 @@
 @include('partials.header')
 
-<body class="font-sans antialiased bg-darkmode text-grey min-h-screen">
+<body class="font-sans antialiased bg-darkmode text-grey min-h-screen overflow-x-hidden">
     @include('partials.navigation')
 
     <main>
@@ -12,9 +12,9 @@
             </div>
         @endif
 
-        <section class="relative py-16 md:py-24 overflow-hidden">
+        <section class="relative py-16 md:py-24 overflow-visible">
             <div class="absolute inset-0 bg-gradient-to-b from-darklight/40 to-darkmode" aria-hidden="true"></div>
-            <div class="pointer-events-none absolute w-50 h-50 bg-gradient-to-bl from-tealGreen from-50% to-charcoalGray to-60% blur-400 rounded-full -top-40 -right-10 z-0"></div>
+            <div class="pointer-events-none absolute w-50 h-50 bg-gradient-to-bl from-tealGreen from-50% to-charcoalGray to-60% blur-400 rounded-full -top-40 -right-10 z-0 [transform:translateZ(0)]" style="filter: blur(120px); -webkit-filter: blur(120px);"></div>
             <div class="relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-center">
                     <div class="text-center lg:text-left order-2 lg:order-1">
@@ -37,9 +37,9 @@
             </div>
         </section>
 
-        <section class="py-16 md:py-24 border-t border-dark_border relative overflow-hidden">
-            <div class="pointer-events-none absolute w-72 h-72 bg-gradient-to-bl from-tealGreen from-50% to-charcoalGray to-60% blur-400 rounded-full -top-32 -left-24 z-0 opacity-70"></div>
-            <div class="pointer-events-none absolute w-96 h-96 bg-gradient-to-br from-primary from-40% to-secondary to-70% blur-400 rounded-full -bottom-40 -right-24 z-0 opacity-70"></div>
+        <section class="py-16 md:py-24 border-t border-dark_border relative overflow-visible">
+            <div class="pointer-events-none absolute w-72 h-72 bg-gradient-to-bl from-tealGreen from-50% to-charcoalGray to-60% blur-400 rounded-full -top-32 -left-24 z-0 opacity-70 [transform:translateZ(0)]" style="filter: blur(120px); -webkit-filter: blur(120px);"></div>
+            <div class="pointer-events-none absolute w-96 h-96 bg-gradient-to-br from-primary from-40% to-secondary to-70% blur-400 rounded-full -bottom-40 -right-24 z-0 opacity-70 [transform:translateZ(0)]" style="filter: blur(120px); -webkit-filter: blur(120px);"></div>
 
             <div class="relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
                 <div class="text-center mb-14">
@@ -89,9 +89,9 @@
             </div>
         </section>
 
-        <section class="py-16 md:py-24 border-t border-dark_border/60 bg-darkmode relative overflow-hidden">
-            <div class="pointer-events-none absolute bg-gradient-to-br from-tealGreen to-charcoalGray w-96 h-96 rounded-full -bottom-64 -left-32 blur-400 opacity-60 z-0"></div>
-            <div class="pointer-events-none absolute bg-gradient-to-bl from-tealGreen from-40% to-charcoalGray to-80% w-72 h-72 rounded-full -top-24 -right-20 blur-400 opacity-70 z-0"></div>
+        <section class="py-16 md:py-24 border-t border-dark_border/60 bg-darkmode relative overflow-visible">
+            <div class="pointer-events-none absolute bg-gradient-to-br from-tealGreen to-charcoalGray w-96 h-96 rounded-full -bottom-64 -left-32 blur-400 opacity-60 z-0 [transform:translateZ(0)]" style="filter: blur(120px); -webkit-filter: blur(120px);"></div>
+            <div class="pointer-events-none absolute bg-gradient-to-bl from-tealGreen from-40% to-charcoalGray to-80% w-72 h-72 rounded-full -top-24 -right-20 blur-400 opacity-70 z-0 [transform:translateZ(0)]" style="filter: blur(120px); -webkit-filter: blur(120px);"></div>
 
             <div class="relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
                 <div class="grid gap-10 lg:grid-cols-2 items-center">
@@ -103,7 +103,7 @@
                             Fast, reliable and built for volume.
                         </h2>
                         <p class="text-muted text-sm md:text-base mb-6">
-                            Mega Bulk Service is designed for businesses and resellers that need consistent uptime,
+                            Planet F service is designed for businesses and resellers that need consistent uptime,
                             instant delivery and transparent pricing across all major networks.
                         </p>
                         <ul class="space-y-3 text-sm text-grey">
@@ -142,7 +142,7 @@
                             <p class="text-muted text-xs mb-4">
                                 Reach us on WhatsApp or email whenever you need assistance with a transaction.
                             </p>
-                            <a href="https://wa.me/+2347011223737" target="_blank"
+                            <a href="https://wa.me/2348031230068" target="_blank"
                                class="inline-flex items-center justify-center px-4 py-2 rounded-lg bg-primary text-darkmode text-xs font-semibold border border-primary hover:bg-transparent hover:text-primary transition">
                                 Chat on WhatsApp
                             </a>

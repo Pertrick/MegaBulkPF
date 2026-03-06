@@ -5,11 +5,12 @@
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{{ config('app.name', 'Mega Bulk Service') }}</title>
+    <title>{{ config('app.name', 'Planet F') }}</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/svg+xml" href="{{ asset('images/planetf_logo.f2c8caa1.svg') }}">
+    <link rel="shortcut icon" type="image/svg+xml" href="{{ asset('images/planetf_logo.f2c8caa1.svg') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

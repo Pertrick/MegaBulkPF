@@ -1,14 +1,14 @@
 
 @include('partials.header')
 
-<body class="font-sans antialiased bg-darkmode text-grey min-h-screen">
+<body class="font-sans antialiased bg-darkmode text-grey min-h-screen overflow-x-hidden">
     @include('partials.navigation')
 
     <main class="py-16 md:py-20">
         {{-- Hero / upload section (match home gradient) --}}
-        <section class="relative py-12 md:py-16 overflow-hidden">
+        <section class="relative py-12 md:py-16 overflow-visible">
             <div class="absolute inset-0 bg-gradient-to-b from-darklight/40 to-darkmode" aria-hidden="true"></div>
-            <div class="pointer-events-none absolute w-50 h-50 bg-gradient-to-bl from-tealGreen from-50% to-charcoalGray to-60% blur-400 rounded-full -top-40 -right-10 z-0"></div>
+            <div class="pointer-events-none absolute w-50 h-50 bg-gradient-to-bl from-tealGreen from-50% to-charcoalGray to-60% blur-400 rounded-full -top-40 -right-10 z-0 [transform:translateZ(0)]" style="filter: blur(120px); -webkit-filter: blur(120px);"></div>
             <div class="relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
                 @if (session('message'))
                     <div class="mb-6">
@@ -59,9 +59,9 @@
         </section>
 
         {{-- Pricing section: modern network tabs --}}
-        <section class="py-16 md:py-20 border-t border-dark_border relative overflow-hidden">
-            <div class="pointer-events-none absolute w-72 h-72 bg-gradient-to-bl from-tealGreen from-50% to-charcoalGray to-60% blur-400 rounded-full -top-32 -right-24 z-0 opacity-70"></div>
-            <div class="pointer-events-none absolute w-96 h-96 bg-gradient-to-br from-primary from-40% to-secondary to-70% blur-400 rounded-full -bottom-48 -left-32 z-0 opacity-60"></div>
+        <section class="py-16 md:py-20 border-t border-dark_border relative overflow-visible">
+            <div class="pointer-events-none absolute w-72 h-72 bg-gradient-to-bl from-tealGreen from-50% to-charcoalGray to-60% blur-400 rounded-full -top-32 -right-24 z-0 opacity-70 [transform:translateZ(0)]" style="filter: blur(120px); -webkit-filter: blur(120px);"></div>
+            <div class="pointer-events-none absolute w-96 h-96 bg-gradient-to-br from-primary from-40% to-secondary to-70% blur-400 rounded-full -bottom-48 -left-32 z-0 opacity-60 [transform:translateZ(0)]" style="filter: blur(120px); -webkit-filter: blur(120px);"></div>
 
             <div class="relative z-10 max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
                 <div class="text-center mb-10">

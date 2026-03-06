@@ -5,7 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Planet F') }}</title>
+
+        <link rel="icon" type="image/svg+xml" href="{{ asset('images/planetf_logo.f2c8caa1.svg') }}">
+        <link rel="shortcut icon" type="image/svg+xml" href="{{ asset('images/planetf_logo.f2c8caa1.svg') }}">
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +18,7 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans antialiased bg-darkmode text-grey">
+    <body class="font-sans antialiased bg-darkmode text-grey overflow-x-hidden">
         <div class="min-h-screen">
             @include('layouts.navigation')
 

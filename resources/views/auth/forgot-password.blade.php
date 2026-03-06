@@ -1,10 +1,9 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/" class="inline-flex items-center gap-3">
-                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-darkmode font-bold text-lg">
-                    MB
-                </span>
+            <a href="{{ url('/') }}" class="inline-flex flex-col items-center gap-2">
+                <img src="{{ asset('images/planetf_logo.f2c8caa1.svg') }}" alt="Planet F" class="h-12 w-auto">
+                <span class="text-xs font-semibold text-grey tracking-wide uppercase">Planet F</span>
             </a>
         </x-slot>
 

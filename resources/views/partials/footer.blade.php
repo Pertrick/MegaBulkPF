@@ -1,5 +1,5 @@
-<footer class="border-t border-dark_border/60 bg-darkmode relative overflow-hidden">
-    <div class="pointer-events-none absolute bg-gradient-to-br from-tealGreen to-charcoalGray w-80 h-80 rounded-full -top-32 -right-24 blur-400 opacity-60 z-0"></div>
+<footer class="border-t border-dark_border/60 bg-darkmode relative overflow-visible">
+    <div class="pointer-events-none absolute bg-gradient-to-br from-primary to-tealGreen w-96 h-96 rounded-full -top-40 -right-32 blur-400 opacity-60 z-0 [transform:translateZ(0)]" style="filter: blur(100px); -webkit-filter: blur(100px);"></div>
     <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-12 relative z-10">
         <div class="grid gap-8 md:grid-cols-3">
             <div>
@@ -7,11 +7,11 @@
                     Contact us
                 </h3>
                 <p class="text-section text-sm mb-3">
-                    <a class="text-grey hover:text-primary transition" href="https://wa.me/+2347011223737" target="_blank">
-                        +2347011223737
+                    <a class="text-grey hover:text-primary transition" href="https://wa.me/2348031230068" target="_blank">
+                        +2348031230068
                     </a><br>
-                    <a class="text-grey hover:text-primary transition" href="mailto:info@5starcompany.com.ng">
-                        info@5starcompany.com.ng
+                    <a class="text-grey hover:text-primary transition" href="mailto:info@planetf.com.ng">
+                        info@planetf.com.ng
                     </a>
                 </p>
                 <div class="flex items-center gap-3">
@@ -71,7 +71,7 @@
             <p>
                 &copy; <script>document.write(new Date().getFullYear());</script>
                 All rights reserved |
-                <a href="/" class="text-grey hover:text-primary transition">Mega Bulk Service</a>
+                <a href="/" class="text-grey hover:text-primary transition">Planet F</a>
             </p>
         </div>
     </div>
