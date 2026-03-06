@@ -20,6 +20,11 @@ use App\Http\Controllers\DownloadController;
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
+
+Route::get('/how-to-use', function () {
+    return view('how-to-use');
+})->name('how-to-use');
+
 //for downloading sample file
 
 Route::get('/download_data', [DownloadController::class, 'downloadData'])->name('download.data');

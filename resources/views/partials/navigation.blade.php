@@ -18,6 +18,10 @@
                    class="text-base md:text-lg font-medium {{ request()->is('data*') ? 'text-primary' : 'text-grey hover:text-primary' }} transition">
                     Data
                 </a>
+                <a href="{{ route('how-to-use') }}"
+                   class="text-base md:text-lg font-medium {{ request()->is('how-to-use') ? 'text-primary' : 'text-grey hover:text-primary' }} transition">
+                    How to use
+                </a>
             </div>
 
             <div class="hidden md:flex items-center gap-4">
@@ -71,6 +75,11 @@
                @click="open = false"
                class="block text-base font-medium {{ request()->is('data*') ? 'text-primary' : 'text-grey hover:text-primary' }} transition">
                 Data
+            </a>
+            <a href="{{ route('how-to-use') }}"
+               @click="open = false"
+               class="block text-base font-medium {{ request()->is('how-to-use') ? 'text-primary' : 'text-grey hover:text-primary' }} transition">
+                How to use
             </a>
 
             <div class="mt-4 border-t border-dark_border/60 pt-4 space-y-2">

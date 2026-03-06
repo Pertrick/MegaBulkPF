@@ -53,6 +53,11 @@
                             Data
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('how-to-use') }}" class="text-section hover:text-primary transition">
+                            How to use
+                        </a>
+                    </li>
                 </ul>
             </div>
 
