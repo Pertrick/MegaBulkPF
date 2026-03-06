@@ -59,7 +59,7 @@ class ServiceProviderAction
 
     public function cachedMtn()
     {
-        return Cache::rememberForever('mtn', function () {
+        return Cache::remember('mtn', 3600, function () {
             $mtnData = $this->mtnData();
             return $mtnData['data'] ?? [];
         });
@@ -67,7 +67,7 @@ class ServiceProviderAction
 
     public function cachedAirtel()
     {
-        return Cache::rememberForever('airtel', function () {
+        return Cache::remember('airtel', 3600, function () {
             $airtelData = $this->airtelData();
             return $airtelData['data'] ?? [];
         });
@@ -75,7 +75,7 @@ class ServiceProviderAction
 
     public function cachedGlo()
     {
-        return Cache::rememberForever('glo', function () {
+        return Cache::remember('glo', 3600, function () {
             $gloData = $this->gloData();
             return $gloData['data'] ?? [];
         });
@@ -83,7 +83,7 @@ class ServiceProviderAction
 
     public function cachedEtisalat()
     {
-        return Cache::rememberForever('etisalat', function () {
+        return Cache::remember('etisalat', 3600, function () {
             $etisalatData = $this->etisalatData();
             return $etisalatData['data'] ?? [];
         });
