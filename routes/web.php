@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataController;
 use App\Http\Controllers\AirtimeController;
@@ -32,6 +33,11 @@ Route::get('/payment_confirmation/{id}', [PaymentController::class, 'redirectPag
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
+
+Route::get('/artisan/optimize-clear', function () {
+    Artisan::call('optimize:clear');
+    return response()->json(['message' => 'Optimize clear completed.', 'output' => Artisan::output()]);
+})->name('artisan.optimize-clear');
 
 require __DIR__.'/auth.php';
 
