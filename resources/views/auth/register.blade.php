@@ -1,59 +1,75 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+            <a href="{{ url('/') }}" class="inline-flex flex-col items-center gap-2">
+                <span class="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary text-darkmode font-bold text-lg">MB</span>
+                <span class="text-xs font-semibold text-grey tracking-wide uppercase">Mega Bulk Service</span>
             </a>
         </x-slot>
 
-        <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
-        <form method="POST" action="{{ route('register') }}">
+        <form method="POST" action="{{ route('register') }}" class="text-left text-white">
             @csrf
 
-            <!-- Name -->
-            <div>
-                <x-input-label for="name" :value="__('Name')" />
-
-                <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
+            <div class="mb-[22px]">
+                <input type="text"
+                       name="name"
+                       id="name"
+                       value="{{ old('name') }}"
+                       placeholder="{{ __('Name') }}"
+                       required
+                       autofocus
+                       class="w-full rounded-md border border-dark_border bg-transparent px-5 py-3 text-base text-white outline-none transition placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/60">
             </div>
 
-            <!-- Email Address -->
-            <div class="mt-4">
-                <x-input-label for="email" :value="__('Email')" />
-
-                <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
+            <div class="mb-[22px]">
+                <input type="email"
+                       name="email"
+                       id="email"
+                       value="{{ old('email') }}"
+                       placeholder="{{ __('Email') }}"
+                       required
+                       class="w-full rounded-md border border-dark_border bg-transparent px-5 py-3 text-base text-white outline-none transition placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/60">
             </div>
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-input-label for="password" :value="__('Password')" />
-
-                <x-text-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="new-password" />
+            <div class="mb-[22px]">
+                <input type="password"
+                       name="password"
+                       id="password"
+                       placeholder="{{ __('Password') }}"
+                       required
+                       autocomplete="new-password"
+                       class="w-full rounded-md border border-dark_border bg-transparent px-5 py-3 text-base text-white outline-none transition placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/60">
             </div>
 
-            <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required />
+            <div class="mb-[22px]">
+                <input type="password"
+                       name="password_confirmation"
+                       id="password_confirmation"
+                       placeholder="{{ __('Confirm Password') }}"
+                       required
+                       class="w-full rounded-md border border-dark_border bg-transparent px-5 py-3 text-base text-white outline-none transition placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/60">
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
-                    {{ __('Already registered?') }}
-                </a>
-
-                <x-primary-button class="ml-4">
-                    {{ __('Register') }}
-                </x-primary-button>
+            <div class="mb-9">
+                <button type="submit"
+                        class="w-full py-3 rounded-lg text-lg font-semibold bg-primary text-darkmode border border-primary shadow-cause-shadow hover:bg-transparent hover:text-primary hover:shadow-none transition">
+                    {{ __('Sign Up') }}
+                </button>
             </div>
         </form>
+
+        <p class="text-white text-sm mb-4">
+            {{ __('By creating an account you agree to our') }}
+            <a href="#" class="text-primary hover:underline">{{ __('Privacy') }}</a>
+            {{ __('and') }}
+            <a href="#" class="text-primary hover:underline">{{ __('Policy') }}</a>.
+        </p>
+
+        <p class="text-white text-base">
+            {{ __('Already have an account?') }}
+            <a href="{{ route('login') }}" class="text-primary hover:underline">{{ __('Sign In') }}</a>
+        </p>
     </x-auth-card>
 </x-guest-layout>

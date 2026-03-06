@@ -30,13 +30,20 @@ class AirtimeController extends Controller
         $total_amount = 0;
         $email = $request->email;
         $uploadedData = $request->data;
-        $uploadedData = Json_decode($uploadedData, true);
+        $uploadedData = json_decode($uploadedData, true);
 
         foreach ($uploadedData as ["amount" => $amount]) {
-            $total_amount = $total_amount + $amount;
+            $total_amount += $amount;
         }
 
         $payout = $payment->paymentCheckout($email, $total_amount);
+
+        if (!is_array($payout) || !isset($payout['reference'], $payout['checkout_url'])) {
+            return response()->json([
+                'message' => 'Unable to initialize airtime payment at the moment. Please try again.',
+            ], 500);
+        }
+
         $reference = $payout['reference'];
 
         if ($payout) {

@@ -1,204 +1,91 @@
 <?php
 
 namespace App\Actions;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Cache;
+
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
 
 class ServiceProviderAction
 {
+    private $baseUrl = 'https://transactiontest.mcd.5starcompany.com.ng/api/v1/';
+    private $apiKey = 'mcd_key_fertyuilokmjnhgft56789807675434265fd';
+
+    private function request($payload=null, $url = null, $method = 'POST')
+    {
+        if($payload){
+            $response = Http::withHeaders([
+                'Authorization' => $this->apiKey,
+                'Content-Type' => 'application/json',
+            ])->$method($this->baseUrl . $url, $payload);
+        }else{
+            $response = Http::withHeaders([
+                'Authorization' => $this->apiKey,
+            ])->$method($this->baseUrl . $url);
+        }
+        return $response->json();
+    }
+
     public function airtime()
     {
-        $curl = curl_init();
 
-        curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://test.mcd.5starcompany.com.ng/api/reseller/list',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => '{
-            "service" : "airtime"
-        }',
-            CURLOPT_HTTPHEADER => array(
-                'Authorization: mcd_key_fertyuilokmjnhgft56789807675434265fd',
-                'Content-Type: application/json',
-            ),
-        ));
+        $response = $this->request(null, 'airtime', 'GET');
 
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-
-        $response = json_decode($response, true);
-        $airtime = $response["data"];
-
-         return view('airtime', compact('airtime'));
-        
+        return $response['data'] ?? [];
     }
 
-    public function mtnData(){
-       
-      $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-          CURLOPT_URL => 'https://test.mcd.5starcompany.com.ng/api/reseller/list',
-          CURLOPT_RETURNTRANSFER => true,
-          CURLOPT_ENCODING => '',
-          CURLOPT_MAXREDIRS => 10,
-          CURLOPT_TIMEOUT => 0,
-          CURLOPT_FOLLOWLOCATION => true,
-          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-          CURLOPT_CUSTOMREQUEST => 'POST',
-          CURLOPT_POSTFIELDS =>'{
-            "service" : "data",
-            "coded" : "m"
-        }',
-          CURLOPT_HTTPHEADER => array(
-            'Authorization: mcd_key_fertyuilokmjnhgft56789807675434265fd',
-            'Content-Type: application/json'
-          ),
-        ));
-        
-        $response = curl_exec($curl);
-        
-        curl_close($curl);
-        $mtnDataList = json_decode($response, true);
-        return $mtnDataList;
+    public function mtnData()
+    {
+        $response = $this->request(null, 'data/MTN', 'GET');
+        return $response ?? [];
     }
 
-    
-    public function airtelData(){
-       
-        $curl = curl_init();
-  
-          curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://test.mcd.5starcompany.com.ng/api/reseller/list',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS =>'{
-              "service" : "data",
-              "coded" : "a"
-          }',
-            CURLOPT_HTTPHEADER => array(
-              'Authorization: mcd_key_fertyuilokmjnhgft56789807675434265fd',
-              'Content-Type: application/json'
-            ),
-          ));
-          
-          $response = curl_exec($curl);
-          
-          curl_close($curl);
-          $airtelDataList = json_decode($response, true);
-          return $airtelDataList;
-      }
+    public function airtelData()
+    {
+        $response = $this->request(null, 'data/AIRTEL', 'GET');
+        return $response ?? null;
+    }
 
+    public function etisalatData()
+    {
+        $response = $this->request(null, 'data/9MOBILE', 'GET');
+        return $response ?? null;
+    }
 
-      
-    public function etisalatData(){
-       
-        $curl = curl_init();
-  
-          curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://test.mcd.5starcompany.com.ng/api/reseller/list',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS =>'{
-              "service" : "data",
-              "coded" : "9"
-          }',
-            CURLOPT_HTTPHEADER => array(
-              'Authorization: mcd_key_fertyuilokmjnhgft56789807675434265fd',
-              'Content-Type: application/json'
-            ),
-          ));
-          
-          $response = curl_exec($curl);
-          
-          curl_close($curl);
-          $etisalatDataList = json_decode($response, true);
-          return $etisalatDataList;
-      }
+    public function gloData()
+    {
+        $response = $this->request(null, 'data/GLO', 'GET');
+        return $response ?? null;
+    }
 
-      
-    public function gloData(){
-       
-        $curl = curl_init();
-  
-          curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://test.mcd.5starcompany.com.ng/api/reseller/list',
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS =>'{
-              "service" : "data",
-              "coded" : "g"
-          }',
-            CURLOPT_HTTPHEADER => array(
-              'Authorization: mcd_key_fertyuilokmjnhgft56789807675434265fd',
-              'Content-Type: application/json'
-            ),
-          ));
-          
-          $response = curl_exec($curl);
-          
-          curl_close($curl);
-          $gloDataList = json_decode($response, true);
-          return $gloDataList;
-      }
-
-
-      public function cachedMtn(){
-        $mtnData = $this->mtnData();
-          $mtn = Cache::rememberForever('mtn', function() use($mtnData){
-            return $mtnData['data'];
+    public function cachedMtn()
+    {
+        return Cache::rememberForever('mtn', function () {
+            $mtnData = $this->mtnData();
+            return $mtnData['data'] ?? [];
         });
+    }
 
-        return $mtn;
-      }
-
-       public function cachedAirtel(){
-        $airtelData = $this->airtelData();
-          $airtel = Cache::rememberForever('airtel', function() use($airtelData){
-            return $airtelData['data'];
+    public function cachedAirtel()
+    {
+        return Cache::rememberForever('airtel', function () {
+            $airtelData = $this->airtelData();
+            return $airtelData['data'] ?? [];
         });
+    }
 
-        return $airtel;
-     }
-
-      public function cachedGlo(){
-        $gloData = $this->gloData();
-          $glo = Cache::rememberForever('glo', function() use($gloData){
-            return $gloData['data'];
+    public function cachedGlo()
+    {
+        return Cache::rememberForever('glo', function () {
+            $gloData = $this->gloData();
+            return $gloData['data'] ?? [];
         });
+    }
 
-        return $glo;
-      }
-
-      public function cachedEtisalat(){
-        $etisalatData = $this->etisalatData();
-        $etisalat = Cache::rememberForever('etisalat', function() use($etisalatData){
-          return $etisalatData['data'];
+    public function cachedEtisalat()
+    {
+        return Cache::rememberForever('etisalat', function () {
+            $etisalatData = $this->etisalatData();
+            return $etisalatData['data'] ?? [];
         });
-
-          return $etisalat;
-      }
-  
+    }
 }

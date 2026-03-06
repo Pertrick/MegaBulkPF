@@ -1,8 +1,10 @@
 <x-guest-layout>
     <x-auth-card>
         <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+            <a href="/" class="inline-flex items-center gap-3">
+                <span class="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-primary text-darkmode font-bold text-lg">
+                    MB
+                </span>
             </a>
         </x-slot>
 

@@ -41,6 +41,8 @@
         const type = $("#type").val();
 
         if (validateEmail(email)) {
+            // Close the payment modal before starting payment flow
+            $('#paymentModal').modal("hide");
 
             if(type == "airtime"){
                 const data = JSON.stringify( convertDataToJson());
@@ -64,29 +66,58 @@
 
 
 function displayHTMLTable(results) {
-    var table = "<table class='table table-bordered table-hover' id='tblData' style='width:100%; margin:0 auto;'>";
-    var data = results.data;
-    console.log(data)
-    data.forEach(element => {
-        console.log(element.length != data[0].length);
-        if(element.length != data[0].length){
-            var index = data.indexOf(element);
-            data.splice(index)
-        }
+    var data = Array.isArray(results.data) ? results.data : [];
+
+    // Remove completely empty rows (helps with large sheets and trailing blanks)
+    data = data.filter(function (row) {
+        if (!Array.isArray(row)) return false;
+        return row.some(function (cell) {
+            return String(cell).trim() !== '';
+        });
     });
 
-    console.log(data);
-    for (i = 0; i < data.length; i++) {
+    if (!data.length) {
+        Swal.fire({
+            title: "No rows found in CSV",
+            icon: "error",
+            button: "close"
+        });
+        return;
+    }
+
+    // Enforce consistent column count based on first non-empty row
+    var expectedLength = data[0].length;
+    var cleanData = data.filter(function (row) {
+        return row.length === expectedLength;
+    });
+
+    if (!cleanData.length) {
+        Swal.fire({
+            title: "CSV format error",
+            text: "All rows appear to have different number of columns.",
+            icon: "error",
+            button: "close"
+        });
+        return;
+    }
+
+    var table = "<table class='table table-bordered table-hover' id='tblData' style='width:100%; margin:0 auto;'>";
+
+    for (var i = 0; i < cleanData.length; i++) {
         table += "<tr>";
-        var row = data[i];
-        var cells = row.join(",").split(",");
-        for (j = 0; j < cells.length; j++) {
-            table += "<td>" ;
-            table += cells[j];
-            table += "</td>";
+        var row = cleanData[i];
+        for (var j = 0; j < row.length; j++) {
+            var cell = row[j] != null ? String(row[j]) : "";
+            // Basic HTML escaping to avoid breaking markup
+            cell = cell
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;");
+            table += "<td>" + cell + "</td>";
         }
         table += "</tr>";
     }
+
     table += "</table>";
 
     $(".table-modal").html(table);
@@ -158,6 +189,16 @@ function makePayment(type,data,email){
         },
         error: function(response) {
             console.log(response);
+            var msg = 'Unable to process payment at the moment. Please try again.';
+            if (response && response.responseJSON && response.responseJSON.message) {
+                msg = response.responseJSON.message;
+            }
+            Swal.fire({
+                title: 'Payment error',
+                text: msg,
+                icon: 'error',
+                confirmButtonText: 'Close'
+            });
         }
     });
 }
@@ -171,13 +212,14 @@ function validateAirtimeCsv(){
             Swal.fire({
                 title:"Invalid Network Service!",
                 icon: "error",
-                button:"close"
+                confirmButtonText:"Close"
             });
         }else{
             Swal.fire({
-                title:"CSV Validation Sucessful",
-                icon: "success",  
-                button:"close"
+                title:"CSV Validation Successful",
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false
             });
         $('#exampleModal').modal("hide");
         $('#paymentModal').modal("show");
@@ -193,38 +235,51 @@ function validateDataCsv(){
    console.log(status);
 
    if(status){
-    validateCode(function(response){
-        if(response.responseJSON =="error"){
+    validateCode(function(error, response){
+        if (error || !response || response.status !== 'ok') {
+            var msg = (response && response.message) ? response.message : "Invalid Data Code Entry!";
+            if (error && error.responseJSON && error.responseJSON.message) {
+                msg = error.responseJSON.message;
+            }
             Swal.fire({
-                title:"Invalid Data Code Entry!",
+                title: msg,
                 icon: "error",
-                button:"close"
+                confirmButtonText: "Close"
             });
-         }else{
-                Swal.fire({
-                    title:"CSV Validation Sucessful",
-                    icon: "success",  
-                    button:"close"
-                });
+        } else {
+            Swal.fire({
+                title:"CSV Validation Successful",
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false
+            });
 
             $('#exampleModal').modal("hide");
 
-            updateDataTable(function(response){
-                console.log(response);
-                appendDataToTable(response);
+            updateDataTable(function(updateError, updateResponse){
+                if (updateError || !Array.isArray(updateResponse)) {
+                    var tableMsg = (updateError && updateError.responseJSON) ? updateError.responseJSON : "Unable to build data table from submitted CSV.";
+                    Swal.fire({
+                        title: "Data table error",
+                        text: tableMsg,
+                        icon: "error",
+                        confirmButtonText: "Close"
+                    });
+                    return;
+                }
+
+                console.log(updateResponse);
+                appendDataToTable(updateResponse);
                 $('#updateTableModal').modal("show");
             });
             
             $('#accept').on('click', () =>{
                 $('#updateTableModal').modal("hide");
                 $('#paymentModal').modal("show");
-            })
-
-        
-         }
-        
+            });
+        }
       });
-    }
+   }
 }
 
 
@@ -278,10 +333,14 @@ function validateCode(callback){
             Swal.showLoading();
         },
         complete: function(){
+            Swal.close();
         },
-        success: callback,
-        error: callback
-           
+        success: function(resp){
+            callback(null, resp);
+        },
+        error: function(jqXHR){
+            callback(jqXHR, null);
+        }
     });
    }
 
@@ -344,9 +403,12 @@ function validateCode(callback){
         complete: function(){
             Swal.close();
         },
-        success: callback,
-        error:  callback
-           
+        success: function(resp){
+            callback(null, resp);
+        },
+        error:  function(jqXHR){
+            callback(jqXHR, null);
+        }
     });
 
    }
