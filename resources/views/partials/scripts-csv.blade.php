@@ -42,6 +42,9 @@
             if (action === 'show') {
                 $el.removeClass('hidden').addClass('flex items-center justify-center');
                 $('body').addClass('overflow-hidden');
+                if ($el.attr('id') === 'paymentModal') {
+                    $(document).trigger('paymentModalShow');
+                }
             } else if (action === 'hide') {
                 $el.addClass('hidden').removeClass('flex items-center justify-center');
                 $('body').removeClass('overflow-hidden');

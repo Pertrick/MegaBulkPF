@@ -28,39 +28,70 @@
         }
     });
 
-    
+    $('input[name="planetf_account"]').on("change", function() {
+        var isExisting = $(this).val() === "yes";
+        if (isExisting) {
+            $("#payment-form-existing").removeClass("hidden").attr("aria-hidden", "false");
+            $("#payment-form-new").addClass("hidden").attr("aria-hidden", "true");
+            $("#email").prop("required", false);
+            setTimeout(function() { $("#email-existing").focus(); }, 50);
+        } else {
+            $("#payment-form-existing").addClass("hidden").attr("aria-hidden", "true");
+            $("#payment-form-new").removeClass("hidden").attr("aria-hidden", "false");
+            $("#email").prop("required", true);
+            setTimeout(function() { $("#email").focus(); }, 50);
+        }
+    });
+
+    $(document).on("paymentModalShow", function() {
+        $("#account-no").prop("checked", true);
+        $("#payment-form-existing").addClass("hidden").attr("aria-hidden", "true");
+        $("#payment-form-new").removeClass("hidden").attr("aria-hidden", "false");
+        $("#email").prop("required", true).val("");
+        $("#email-existing").val("");
+        $("#pin").val("");
+        $("#proceed-to-pay").prop("disabled", false).text("Make payment");
+        setTimeout(function() { $("#email").focus(); }, 80);
+    });
+
     $('#proceed-to-pay').click(function(e) {
         e.preventDefault();
+        var $btn = $(this);
+        if ($btn.prop("disabled")) return;
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') } });
+
+        var isExisting = $('input[name="planetf_account"]:checked').val() === "yes";
+        var email, pin = null;
+
+        if (isExisting) {
+            email = $('#email-existing').val().trim();
+            pin = $('#pin').val();
+            if (!email || !pin) {
+                Swal.fire({ title: "Enter email and PIN", icon: "error", confirmButtonText: "OK" });
+                return;
             }
-        });
-        const email = $('#email').val();
-        const type = $("#type").val();
-
-        if (validateEmail(email)) {
-            // Close the payment modal before starting payment flow
-            $('#paymentModal').modal("hide");
-
-            if(type == "airtime"){
-                const data = JSON.stringify( convertDataToJson());
-                makePayment(type, data, email);
-            }else if(type=="data"){
-                const data = JSON.stringify(convertUpdatedDataToJson());
-                makePayment(type, data, email);
-            } 
-
-           
+            if (!validateEmail(email)) {
+                Swal.fire({ title: "Invalid email", icon: "error", confirmButtonText: "OK" });
+                return;
+            }
+        } else {
+            email = $('#email').val().trim();
+            if (!email || !validateEmail(email)) {
+                Swal.fire({ title: "Enter a valid email", icon: "error", confirmButtonText: "OK" });
+                return;
+            }
         }
-        else {
-                Swal.fire({
-                        title:"Invalid email!",
-                        icon: "error",
-                        button:"close"
-                    }
-            )
+
+        var type = $("#type").val();
+        $btn.prop("disabled", true).text("Processing…");
+
+        if (type === "airtime") {
+            makePayment(type, JSON.stringify(convertDataToJson()), email, pin, $btn);
+        } else if (type === "data") {
+            makePayment(type, JSON.stringify(convertUpdatedDataToJson()), email, pin, $btn);
+        } else {
+            $btn.prop("disabled", false).text("Make payment");
         }
     });
 
@@ -166,39 +197,29 @@ function validateEmail(email) {
     return res.test(String(email).toLowerCase());
 }
 
-function makePayment(type,data,email){
+function makePayment(type, data, email, pin, $payBtn) {
+    var payload = { email: email, data: data };
+    if (pin) payload.pin = pin;
+
     $.ajax({
         type: "POST",
-        url: "/"+type+"/store",
-        dataType: 'JSON',
-        data: {
-            'email': email,
-            'data': data
-        },
-        beforeSend: function(){
-            Swal.showLoading();
-        },
-        complete: function(){
-            Swal.close();
-        },
+        url: "/" + type + "/store",
+        dataType: "JSON",
+        data: payload,
         success: function(payout) {
-            payout_link = payout['checkout_url'];
-            console.log(payout['checkout_url']);
-            window.location = payout_link;                
-
-        },
-        error: function(response) {
-            console.log(response);
-            var msg = 'Unable to process payment at the moment. Please try again.';
-            if (response && response.responseJSON && response.responseJSON.message) {
-                msg = response.responseJSON.message;
+            var url = payout && payout.checkout_url ? payout.checkout_url : null;
+            if (url) {
+                $('#paymentModal').modal("hide");
+                window.location = url;
+            } else {
+                if ($payBtn && $payBtn.length) $payBtn.prop("disabled", false).text("Make payment");
+                Swal.fire({ title: "Something went wrong", icon: "error", confirmButtonText: "OK" });
             }
-            Swal.fire({
-                title: 'Payment error',
-                text: msg,
-                icon: 'error',
-                confirmButtonText: 'Close'
-            });
+        },
+        error: function(xhr) {
+            var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : "Please try again.";
+            if ($payBtn && $payBtn.length) $payBtn.prop("disabled", false).text("Make payment");
+            Swal.fire({ title: msg, icon: "error", confirmButtonText: "OK" });
         }
     });
 }

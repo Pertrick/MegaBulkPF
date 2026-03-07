@@ -31,4 +31,9 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'planetf' => [
+        'validation_url' => env('PLANET_F_VALIDATION_URL'),
+        'api_key' => env('PLANET_F_API_KEY'),
+    ],
+
 ];
