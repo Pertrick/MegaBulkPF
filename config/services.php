@@ -33,7 +33,10 @@ return [
 
     'planetf' => [
         'validation_url' => env('PLANET_F_VALIDATION_URL'),
-        'api_key' => env('PLANET_F_API_KEY'),
+        'api_key'        => env('PLANET_F_API_KEY'),
+        'airtime_url'    => env('PLANET_F_AIRTIME_URL', 'https://planetf.com.ng/api/v2/bulk/airtime'),
+        'data_url'       => env('PLANET_F_DATA_URL', 'https://planetf.com.ng/api/v2/bulk/data'),
+        'data_token'     => env('PLANET_F_DATA_TOKEN'),
     ],
 
 ];

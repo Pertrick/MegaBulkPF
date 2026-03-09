@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\PaymentAction;
 use App\Actions\PlanetFValidationAction;
+use App\Actions\PlanetFPurchaseAction;
 use App\Actions\ServiceProviderAction;
 use App\Models\Data;
 use App\Models\Payment;
@@ -144,7 +145,12 @@ class DataController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PaymentAction $payment, PlanetFValidationAction $planetFValidation, Request $request)
+    public function store(
+        PaymentAction $payment,
+        PlanetFValidationAction $planetFValidation,
+        PlanetFPurchaseAction $planetFPurchase,
+        Request $request
+    )
     {
         $request->validate([
             'email' => ['required', 'email'],
@@ -152,8 +158,8 @@ class DataController extends Controller
             'pin' => ['nullable', 'string', 'max:10'],
         ]);
 
-        $email = $request->email;
-        $pin = $request->input('pin');
+        $email        = $request->email;
+        $pin          = $request->input('pin');
         $uploadedData = json_decode(trim($request->data), true);
         $total_amount = 0;
         foreach ($uploadedData as ['amount' => $amount]) {
@@ -177,9 +183,25 @@ class DataController extends Controller
             ], 422);
         }
 
+        // Existing Planet F user: use PlanetF wallet API directly, no Korapay.
+        if ($pin !== null && $pin !== '') {
+            $result = $planetFPurchase->buyDataFromRows($uploadedData, $email, $pin);
+            if (! $result['success']) {
+                return response()->json([
+                    'message' => $result['message'] ?? 'Unable to complete data purchase. Please try again.',
+                ], 422);
+            }
+
+            return response()->json([
+                'success' => 1,
+                'message' => $result['message'] ?? 'Data purchase successful.',
+            ]);
+        }
+
+        // New user (no PIN): go through Korapay checkout as before.
         $payout = $payment->paymentCheckout($email, $total_amount);
 
-        if (!is_array($payout) || !isset($payout['reference'], $payout['checkout_url'])) {
+        if (! is_array($payout) || ! isset($payout['reference'], $payout['checkout_url'])) {
             return response()->json([
                 'message' => 'Unable to initialize data payment at the moment. Please try again.',
             ], 500);
@@ -188,7 +210,6 @@ class DataController extends Controller
         $reference = $payout['reference'];
 
         DB::transaction(function () use ($email, $uploadedData, $reference, $total_amount): void {
-
             $payment = new Payment();
             $payment->savePayment("user$reference", $email, Payment::DATA, $reference, 'NGN', $total_amount);
 
@@ -197,7 +218,6 @@ class DataController extends Controller
                 $data = new Data();
                 $data->saveData($value, $email, $paymentId);
             }
-
         });
 
         return response()->json($payout);

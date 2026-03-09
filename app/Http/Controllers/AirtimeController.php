@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\PaymentAction;
 use App\Actions\PlanetFValidationAction;
+use App\Actions\PlanetFPurchaseAction;
 use App\Models\Airtime;
 use App\Models\Payment;
 use Illuminate\Http\Request;
@@ -23,7 +24,12 @@ class AirtimeController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PaymentAction $payment, PlanetFValidationAction $planetFValidation, Request $request)
+    public function store(
+        PaymentAction $payment,
+        PlanetFValidationAction $planetFValidation,
+        PlanetFPurchaseAction $planetFPurchase,
+        Request $request
+    )
     {
         $request->validate([
             'email' => ['required', 'email'],
@@ -31,8 +37,8 @@ class AirtimeController extends Controller
             'pin' => ['nullable', 'string', 'max:10'],
         ]);
 
-        $email = $request->email;
-        $pin = $request->input('pin');
+        $email        = $request->email;
+        $pin          = $request->input('pin');
         $uploadedData = json_decode($request->data, true);
         $total_amount = 0;
         foreach ($uploadedData as ['amount' => $amount]) {
@@ -56,9 +62,25 @@ class AirtimeController extends Controller
             ], 422);
         }
 
+        // Existing Planet F user: use PlanetF wallet API directly, no Korapay.
+        if ($pin !== null && $pin !== '') {
+            $result = $planetFPurchase->buyAirtimeFromRows($uploadedData, $email, $pin);
+            if (! $result['success']) {
+                return response()->json([
+                    'message' => $result['message'] ?? 'Unable to complete airtime purchase. Please try again.',
+                ], 422);
+            }
+
+            return response()->json([
+                'success' => 1,
+                'message' => $result['message'] ?? 'Airtime purchase successful.',
+            ]);
+        }
+
+        // New user (no PIN): go through Korapay checkout as before.
         $payout = $payment->paymentCheckout($email, $total_amount);
 
-        if (!is_array($payout) || !isset($payout['reference'], $payout['checkout_url'])) {
+        if (! is_array($payout) || ! isset($payout['reference'], $payout['checkout_url'])) {
             return response()->json([
                 'message' => 'Unable to initialize airtime payment at the moment. Please try again.',
             ], 500);
@@ -66,22 +88,18 @@ class AirtimeController extends Controller
 
         $reference = $payout['reference'];
 
-        if ($payout) {
-            DB::transaction(function () use ($email, $uploadedData, $reference, $total_amount): void {
+        DB::transaction(function () use ($email, $uploadedData, $reference, $total_amount): void {
+            $payment = new Payment();
+            $payment->savePayment("user$reference", $email, Payment::AIRTIME, $reference, 'NGN', $total_amount);
 
-                $payment = new Payment();
-                $payment->savePayment("user$reference", $email, Payment::AIRTIME, $reference, 'NGN', $total_amount);
+            $paymentId = $payment->id;
+            foreach ($uploadedData as $value) {
+                $data = new Airtime();
+                $data->saveAirtime($value, $email, $paymentId);
+            }
+        });
 
-                $paymentId = $payment->id;
-                foreach ($uploadedData as $value) {
-                    $data = new Airtime();
-                    $data->saveAirtime($value, $email, $paymentId);
-                }
-
-            });
-
-            return response()->json($payout);
-        }
+        return response()->json($payout);
 
     }
 

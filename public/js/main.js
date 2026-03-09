@@ -208,13 +208,26 @@ function makePayment(type, data, email, pin, $payBtn) {
         data: payload,
         success: function(payout) {
             var url = payout && payout.checkout_url ? payout.checkout_url : null;
+
             if (url) {
                 $('#paymentModal').modal("hide");
                 window.location = url;
-            } else {
-                if ($payBtn && $payBtn.length) $payBtn.prop("disabled", false).text("Make payment");
-                Swal.fire({ title: "Something went wrong", icon: "error", confirmButtonText: "OK" });
+                return;
             }
+
+            if (payout && (payout.success === 1 || payout.success === true)) {
+                if ($payBtn && $payBtn.length) $payBtn.prop("disabled", false).text("Make payment");
+                $('#paymentModal').modal("hide");
+                Swal.fire({
+                    title: payout.message || "Purchase successful.",
+                    icon: "success",
+                    confirmButtonText: "OK"
+                });
+                return;
+            }
+
+            if ($payBtn && $payBtn.length) $payBtn.prop("disabled", false).text("Make payment");
+            Swal.fire({ title: "Something went wrong", icon: "error", confirmButtonText: "OK" });
         },
         error: function(xhr) {
             var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : "Please try again.";

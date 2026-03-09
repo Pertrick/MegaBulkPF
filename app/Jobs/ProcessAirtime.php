@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Airtime;
-use App\Actions\PurchaseAirtime;
+use App\Actions\PlanetFPurchaseAction;
 use Illuminate\Support\Facades\Log;
 
 class ProcessAirtime implements ShouldQueue
@@ -32,13 +32,19 @@ class ProcessAirtime implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Airtime $airtime,PurchaseAirtime $purchaseAirtime)
+    public function handle(Airtime $airtime, PlanetFPurchaseAction $planetFPurchase)
     {
-        //Log::info("processing airtime");
         $airtimes = $airtime->getSuccessfulAirtimePaymentIdAttribute($this->paymentId);
-        echo $airtimes;
-        //Log::info("airtime Processing");
-        $response = $purchaseAirtime->buyAirtime($airtimes);
-        echo $response;
+
+        $rows = [];
+        foreach ($airtimes as $row) {
+            $rows[] = [
+                'service'      => $row->network,
+                'amount'       => $row->amount,
+                'phone_number' => $row->phone_number,
+            ];
+        }
+
+        $planetFPurchase->buyAirtimeFromRows($rows, $airtimes[0]->uploaded_by ?? '', ''); // PIN not needed post-Korapay
     }
 }

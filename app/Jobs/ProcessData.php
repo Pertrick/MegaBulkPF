@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Data;
-use App\Actions\PurchaseData;
+use App\Actions\PlanetFPurchaseAction;
 use Illuminate\Support\Facades\Log;
 
 class ProcessData implements ShouldQueue
@@ -31,12 +31,18 @@ class ProcessData implements ShouldQueue
      *
      * @return void
      */
-    public function handle(Data $data, PurchaseData $purchaseData)
+    public function handle(Data $data, PlanetFPurchaseAction $planetFPurchase)
     {
-        //Log::info("processing data");
-        $data  = $data->getSuccessfulDataPaymentAttribute($this->paymentId);
-        echo $data;
-        $response = $purchaseData->buyData($data);
-        echo $response;
+        $records = $data->getSuccessfulDataPaymentAttribute($this->paymentId);
+
+        $rows = [];
+        foreach ($records as $row) {
+            $rows[] = [
+                'network_code' => $row->network_code,
+                'phone_number' => $row->phone_number,
+            ];
+        }
+
+        $planetFPurchase->buyDataFromRows($rows, $records[0]->uploaded_by ?? '', ''); // PIN not needed post-Korapay
     }
 }
