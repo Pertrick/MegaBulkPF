@@ -28,6 +28,7 @@
         }
     });
 
+    // Toggle existing (email + PIN) vs new (email only)
     $('input[name="planetf_account"]').on("change", function() {
         var isExisting = $(this).val() === "yes";
         if (isExisting) {
@@ -43,11 +44,12 @@
         }
     });
 
+    // Reset modal on open
     $(document).on("paymentModalShow", function() {
         $("#account-no").prop("checked", true);
         $("#payment-form-existing").addClass("hidden").attr("aria-hidden", "true");
         $("#payment-form-new").removeClass("hidden").attr("aria-hidden", "false");
-        $("#email").prop("required", true).val("");
+        $("#email").val("").prop("required", true);
         $("#email-existing").val("");
         $("#pin").val("");
         $("#proceed-to-pay").prop("disabled", false).text("Make payment");
@@ -66,7 +68,7 @@
 
         if (isExisting) {
             email = $('#email-existing').val().trim();
-            pin = $('#pin').val();
+            pin   = $('#pin').val().trim();
             if (!email || !pin) {
                 Swal.fire({ title: "Enter email and PIN", icon: "error", confirmButtonText: "OK" });
                 return;
@@ -230,7 +232,17 @@ function makePayment(type, data, email, pin, $payBtn) {
             Swal.fire({ title: "Something went wrong", icon: "error", confirmButtonText: "OK" });
         },
         error: function(xhr) {
-            var msg = (xhr.responseJSON && xhr.responseJSON.message) ? xhr.responseJSON.message : "Please try again.";
+            var json = xhr.responseJSON || {};
+            var msg = json.message || "Please try again.";
+
+            // If this is a Laravel validation error, pull the first field error message
+            if (json.errors && typeof json.errors === 'object') {
+                var firstKey = Object.keys(json.errors)[0];
+                if (firstKey && Array.isArray(json.errors[firstKey]) && json.errors[firstKey].length) {
+                    msg = json.errors[firstKey][0];
+                }
+            }
+
             if ($payBtn && $payBtn.length) $payBtn.prop("disabled", false).text("Make payment");
             Swal.fire({ title: msg, icon: "error", confirmButtonText: "OK" });
         }
