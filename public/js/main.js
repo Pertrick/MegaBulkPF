@@ -31,6 +31,7 @@
     // Toggle existing (email + PIN) vs new (email only)
     $('input[name="planetf_account"]').on("change", function() {
         var isExisting = $(this).val() === "yes";
+        console.log(isExisting);
         if (isExisting) {
             $("#payment-form-existing").removeClass("hidden").attr("aria-hidden", "false");
             $("#payment-form-new").addClass("hidden").attr("aria-hidden", "true");

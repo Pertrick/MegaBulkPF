@@ -103,7 +103,7 @@
                             Fast, reliable and built for volume.
                         </h2>
                         <p class="text-muted text-sm md:text-base mb-6">
-                            Planet F service is designed for businesses and resellers that need consistent uptime,
+                            PlanetF service is designed for businesses and resellers that need consistent uptime,
                             instant delivery and transparent pricing across all major networks.
                         </p>
                         <ul class="space-y-3 text-sm text-grey">

@@ -2,8 +2,8 @@
     <x-auth-card>
         <x-slot name="logo">
             <a href="{{ url('/') }}" class="inline-flex flex-col items-center gap-2">
-                <img src="{{ asset('images/planetf_logo.f2c8caa1.svg') }}" alt="Planet F" class="h-12 w-auto">
-                <span class="text-xs font-semibold text-grey tracking-wide uppercase">Planet F</span>
+                <img src="{{ asset('images/planetf_logo.f2c8caa1.svg') }}" alt="PlanetF" class="h-12 w-auto">
+                <span class="text-xs font-semibold text-grey tracking-wide uppercase">PlanetF</span>
             </a>
         </x-slot>
 

@@ -84,7 +84,7 @@
             <p>
                 &copy; <script>document.write(new Date().getFullYear());</script>
                 All rights reserved |
-                <a href="/" class="text-grey hover:text-primary transition">Planet F</a>
+                <a href="/" class="text-grey hover:text-primary transition">PlanetF</a>
             </p>
         </div>
     </div>

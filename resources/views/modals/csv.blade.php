@@ -29,7 +29,7 @@
             </button>
         </div>
 
-        <p class="text-sm text-muted mb-3">Have a Planet F account?</p>
+        <p class="text-sm text-muted mb-3">Have a PlanetF account?</p>
         <div class="flex gap-2 mb-6">
             <label class="flex-1 cursor-pointer">
                 <input type="radio" name="planetf_account" value="yes" class="peer sr-only" id="account-yes">

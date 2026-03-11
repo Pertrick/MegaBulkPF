@@ -13,7 +13,7 @@
                         Guide
                     </p>
                     <h1 class="text-36 md:text-44 font-bold text-white leading-tight mb-4">
-                        How to use Planet F
+                        How to use PlanetF
                     </h1>
                     <p class="text-grey text-base md:text-lg max-w-2xl mx-auto">
                         Bulk airtime and data made simple. Follow these steps to upload your list, preview, and pay in minutes.
