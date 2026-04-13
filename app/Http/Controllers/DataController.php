@@ -291,7 +291,6 @@ class DataController extends Controller
             $pay->save();
 
             $bulk->uploaded_by_email = $email;
-            $bulk->payment_id = $pay->id;
             $bulk->channel = BulkOrder::CHANNEL_KORAPAY;
             $bulk->save();
 

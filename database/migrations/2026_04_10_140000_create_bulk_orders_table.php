@@ -13,7 +13,6 @@ return new class extends Migration
             $table->uuid('uuid')->unique();
             $table->string('uploaded_by_email');
             $table->string('channel', 32)->nullable()->comment('korapay|wallet');
-            $table->unsignedBigInteger('payment_id')->nullable()->index();
             $table->unsignedInteger('total_rows')->default(0);
             $table->unsignedInteger('processed_rows')->default(0);
             $table->unsignedInteger('failed_rows')->default(0);

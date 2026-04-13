@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -30,7 +30,6 @@ class BulkOrder extends Model
         'service',
         'uploaded_by_email',
         'channel',
-        'payment_id',
         'total_rows',
         'processed_rows',
         'failed_rows',
@@ -53,9 +52,9 @@ class BulkOrder extends Model
         return $this->hasMany(Airtime::class, 'bulk_order_id');
     }
 
-    public function payment(): BelongsTo
+    public function payment(): HasOne
     {
-        return $this->belongsTo(Payment::class);
+        return $this->hasOne(Payment::class, 'bulk_order_id');
     }
 
     /**
@@ -65,12 +64,6 @@ class BulkOrder extends Model
     {
         if (($this->channel ?? '') === self::CHANNEL_WALLET) {
             return $this->status !== self::STATUS_PENDING_PAYMENT;
-        }
-
-        if ($this->payment_id) {
-            $payment = Payment::query()->find($this->payment_id);
-
-            return $payment !== null && $payment->status === Payment::SUCCESS;
         }
 
         return Payment::query()
