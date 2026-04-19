@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Fulfillment is driven by paid bulk orders (queue jobs), not a polling schedule.
+        // Process one queue job per minute (workaround for shared hosting)
+        $schedule->command('queue:work --once --tries=3')->everyMinute()->withoutOverlapping();
     }
 
     /**
